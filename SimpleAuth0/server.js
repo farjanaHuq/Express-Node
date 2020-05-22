@@ -35,12 +35,13 @@ app.get("/", function (req, res) {
   // res.send("This a test server.");
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-app.post("/signup", function (req, res) {
-    
-
-  res.send('User signup');
-  
+app.get("/login", function (req, res) {
+  // res.send("This a test server.");
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+app.get("/myapp", function (req, res) {
+  // res.send("This a test server.");
+  res.sendFile(path.join(__dirname, 'myapp.html'));
 });
 
 // axios.post('https://dev-9tabcska.auth0.com/dbconnections/signup', {

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "auth0": "^2.25.1",
+    "auth0-js": "^9.13.2",
     "axios": "^0.19.2"
   },
   "devDependencies": {},
