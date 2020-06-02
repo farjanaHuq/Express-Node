@@ -49,36 +49,8 @@
         <p>Or log in <a href="/login">here</a></p>
       </div>
     </div>
-    <!-- <h2>Signup Database Connection</h2>
-    <input class="signup-email" />
-    <input type="password" class="signup-password" />
-    <input type="button" class="signup-db" value="Signup" /> -->
   </div>
 
-
-  <!-- <script type="text/javascript">
- var webAuth = new auth0.WebAuth({
-        domain: 'dev-9tabcska.auth0.com',
-        clientID: 'voOkhCijKjDAHv2i75KJZwCwTLHst2W5',
-   });
-  
-    $('.signup-db').click(function (e) {
-        e.preventDefault();
-        webAuth.signup({
-            connection: 'Username-Password-Authentication',
-            email: $('.signup-email').val(),
-            password: $('.signup-password').val(),
-            user_metadata: { plan: 'silver', team_id: 'a111' }
-         },
-        //function(res){
-        //    console.log(res);
-        // }
-        function (err) {
-            if (err) return alert('Something went wrong: ' + err.message);
-            return alert('success signup without login!')
-        });
-   });
-</script> -->
 
   <script type="text/javascript">
     var webAuth = new auth0.WebAuth({
@@ -93,7 +65,7 @@
       webAuth.signup({
         connection: "Username-Password-Authentication",
         email: $("#email-input").val().trim(),
-        password: $("#password-input").val().trim(),
+        password: $("#password-input").val().trim(),  //put an info to input a strong password otherwise it will generate error.
         user_metadata: { plan: 'silver', team_id: 'a111' }
       },
       function (err,res) {
@@ -105,9 +77,13 @@
       });
     });
 
+
   </script>
 
 
 </body>
 
 </html>
+
+// email: blue.sky@yahoo.com
+//password: blueSky123
