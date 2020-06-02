@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="//cdn.auth0.com/js/auth0/development/auth0.min.js"></script>
-  <!-- <link href="stylesheets/style.css" rel="stylesheet"> -->
+  <link href="stylesheets/style.css" rel="stylesheet">
   <style>
       body {
                 background: url(https://img4.goodfon.com/wallpaper/nbig/6/4f/abstraktsiia-krugi-abstract-background-with-modern-design.jpg);
@@ -28,29 +28,7 @@
   </nav>
   <div class="container">
     <div class="row">
-           <div style="font-size: large;">Welcome to this application.</div>
-      
-           <input
-           type="button"
-           class="logout"
-           value="Log Out"
-         />
+           <div style="font-size: large;">Welcome</div>
     
     </div>
   </div>
-
-  <script type='text/javascript'>
-      var webAuth = new auth0.WebAuth({
-        domain:       'dev-9tabcska.auth0.com',
-        clientID:     'voOkhCijKjDAHv2i75KJZwCwTLHst2W5'
-      });
-
-      $('.logout').click(function(e) {
-        e.preventDefault();
-        webAuth.logout({
-        returnTo: 'http://localhost:8080/',
-        client_id: 'voOkhCijKjDAHv2i75KJZwCwTLHst2W5'
-      });
-
-    });
-  </script>

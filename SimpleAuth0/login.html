@@ -1,96 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <title>Auth0.js Demo Examples</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//cdn.auth0.com/js/auth0/development/auth0.min.js"></script>
+  </head>
+  <body class="container">
+    <input id="login-username" value="" />
+    <input id="login-password" type="password" value="" />
+    <!-- <input id="login-scope" value="" />
+    <input id="login-response-type" value="" /> -->
+    <input
+      type="button"
+      class="login-redirect-usernamepassword"
+      value="redirect usernamepassword"
+    />
+    <input
+      type="button"
+      class="login-redirect-authorize"
+      value="redirect authorize"
+    />
+    <!-- <input
+      type="button"
+      class="logout"
+      value="LogOut"
+    /> -->
 
-<head>
-  <title>Login Authentication</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
-  <script src="//cdn.auth0.com/js/auth0/development/auth0.min.js"></script>
-  <!-- <link href="stylesheets/style.css" rel="stylesheet"> -->
-  <style>
-      body {
-                background: url(https://img4.goodfon.com/wallpaper/nbig/6/4f/abstraktsiia-krugi-abstract-background-with-modern-design.jpg);
-                background-size: cover;
-                background-position: center;
-                min-height: 1000px;
-            }
-    </style>
-</head>
+    <div id="err"></div>
+    <div id="result"></div>
 
-<body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>Login Form</h2>
-        <form class="login">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="email-input" placeholder="Email" required>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="current-password" class="form-control" id="password-input" placeholder="Password" required>
-          </div>
-          <button type="submit" class="btn btn-default" id="login-btn">Login</button>
-        </form>
-        <br />
-        <p>Or sign up <a href="/">here</a></p>
-      </div>
-    </div>
-  </div>
+    <script type="text/javascript">
+      var webAuth = new auth0.WebAuth({
+        domain: 'dev-9tabcska.auth0.com',
+        redirectUri: 'http://localhost:8080/myapp',
+        clientID: 'voOkhCijKjDAHv2i75KJZwCwTLHst2W5',
+        leeway: 30
+      });
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!-- <script type="text/javascript" src="js/login.js"></script> -->
-  <script type='text/javascript'>
-    var webAuth = new auth0.WebAuth({
-        domain:       'dev-9tabcska.auth0.com',
-        clientID:     's1MqqXE0hiEar5mZHvOkkFvBSSNGI8Ha-w-nHAAIl_iKrcD1DNaxA_H6hta157O1',
-        redirectUri:   'http://localhost:8080/myapp.html',
-        response_type= 'code'
-     });
-    // webAuth.login({
-    //   realm: 'tests',
-    //   email: 'testuser',
-    //   password: 'testpass',
-    // });
-     webAuth.popup.callback();
-
-     $('#login-btn').on('click',(function(e){
+      // $('.logout').click(function(e) {
+      //   e.preventDefault();
+      //   webAuth.logout({
+      //   returnTo: 'http://localhost:8080/home',
+      //   client_id: 'voOkhCijKjDAHv2i75KJZwCwTLHst2W5'
+      // });
+   
+      $('.login-redirect-usernamepassword').click(function(e) {
         e.preventDefault();
-        console.log('login');
-        webAuth.login({
-          realm: 'Username-Password-Authentication',
-          email: $('#email-input').val().trim(),
+        console.log('foo');
 
-          password: $('#password-input').val().trim(),
-       },function(err){
-          console.log(err);
-       }
-       );
-        // webAuth.redirect.loginWithCredentials(
-        //   {
-        //     connection: 'Username-Password-Authentication',
-        //     email: $('#login-username').val(),
-        //     password: $('#login-password').val(),
-        //     scope: '$openid%20profile%20email%20read:appointments&',             //openid%20profile%20email%20read:appointments&
-        //     responseType: $('#login-response-type').val()
-        //   },
-        //   function(err) {
-        //     $('#err').html(JSON.stringify(err));
-        //   }
-        // );
-      }));
-  
+        webAuth.redirect.loginWithCredentials(
+          {
+            connection: 'Username-Password-Authentication',
+            username: $('#login-username').val(),
+            password: $('#login-password').val(),
+            scope:    'openid%20profile%20email%20read:appointments&',
+            responseType: 'code'
+            // scope: $('#login-scope').val(),             //openid%20profile%20email%20read:appointments&
+            // responseType: $('#login-response-type').val()
+          },
+          function(err) {
+            $('#err').html(JSON.stringify(err));
+          }
+        );
+      });
 
-  </script>
+      $('.login-redirect-authorize').click(function(e) {
+        e.preventDefault();
 
-</body>
+        webAuth.authorize({
+          // scope: $('#login-scope').val(),
+          // responseType: $('#login-response-type').val()
+          scope:    'openid%20profile%20email%20read:appointments&',
+          responseType: 'code'
+        });
+      });
 
+      webAuth.parseHash(function(err, result) {
+        if (err) {
+          $('#err').html(JSON.stringify(err));
+          $(document.body).append($('<div id="parsed"></div>'));
+        }
+
+        if (result) {
+          $('#result').html(JSON.stringify(result));
+          $(document.body).append($('<div id="parsed"></div>'));
+        }
+      });
+
+      $(document).ready(function() {
+        $(document.body).append($('<div id="loaded"></div>'));
+      });
+    </script>
+  </body>
 </html>

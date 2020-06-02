@@ -31,10 +31,20 @@ var PORT = 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Endpoint to serve the configuration file
+// app.get("/auth_config.json", (req, res) => {
+//   res.sendFile(join(__dirname, "auth_config.json"));
+// });
+
 app.get("/", function (req, res) {
   // res.send("This a test server.");
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'home.html'));
 });
+app.get("/signup", function (req, res) {
+  // res.send("This a test server.");
+  res.sendFile(path.join(__dirname, 'signup.html'));
+});
+
 app.get("/login", function (req, res) {
   // res.send("This a test server.");
   res.sendFile(path.join(__dirname, 'login.html'));
@@ -43,24 +53,6 @@ app.get("/myapp", function (req, res) {
   // res.send("This a test server.");
   res.sendFile(path.join(__dirname, 'myapp.html'));
 });
-
-// axios.post('https://dev-9tabcska.auth0.com/dbconnections/signup', {
-//     client_id: "voOkhCijKjDAHv2i75KJZwCwTLHst2W5",
-//     email: "farzio13@yahoo.com",
-//     password: "blackDiamond22",
-//     connection: "Username-Password-Authentication",
-//     username: "johndoe",
-//     given_name: "John",
-//     family_name: "Doe",
-//     name: "John Doe",
-//     nickname: "johnny",
-//     picture: "http://example.org/jdoe.png",
-//     user_metadata: { plan: "silver", team_id: "a111"}
-//     }).then(function (response) {
-//         console.log(response);
-//     }).catch(function (error) {
-//         console.log(error);
-//     });
 
 app.get('/callback', function(req, res){
       res.send('You have been logged out.');
@@ -73,15 +65,4 @@ app.listen(PORT, function () {
 
 
 
-//res.send("User signup"
-    // client_id: "voOkhCijKjDAHv2i75KJZwCwTLHst2W5",
-    // email: "fa.huq03@gmail.com",
-    // password: "PASSWORD",
-    // connection: "Username-Password-Authentication",
-    // username: "johndoe",
-    // given_name: "John",
-    // family_name: "Doe",
-    // name: "John Doe",
-    // nickname: "johnny",
-    // picture: "http://example.org/jdoe.png",
-    // user_metadata: { plan: "silver", team_id: "a111" },
+
