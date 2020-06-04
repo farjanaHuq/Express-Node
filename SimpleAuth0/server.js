@@ -1,6 +1,6 @@
 var express = require("express");
 var path = require("path");
-var axios = require('axios');
+
 
 var app = express();
 var PORT = 8080;
@@ -9,10 +9,10 @@ var PORT = 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Endpoint to serve the configuration file
-// app.get("/auth_config.json", (req, res) => {
-//   res.sendFile(join(__dirname, "auth_config.json"));
-// });
+//Endpoint to serve the configuration file
+app.get("/auth_config.json", (req, res) => {
+  res.sendFile(path.join(__dirname, "auth_config.json"));
+});
 
 app.get("/", function (req, res) {
   // res.send("This a test server.");

@@ -3,8 +3,10 @@
 
 <head>
   <title>Auth0.js Demo Examples</title>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/1.7/auth0-spa-js.production.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="//cdn.auth0.com/js/auth0/development/auth0.min.js"></script>
+  <!-- <script src="js/app.js"></script> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
   <style>
     body {
@@ -17,49 +19,74 @@
 </head>
 
 <body class="container">
-
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-      </div>
-    </div>
-  </nav>
   <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>Login Form</h2>
-        <form class="login">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="email-input" placeholder="Email" required>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="current-password" class="form-control" id="password-input" placeholder="Password" required>
-          </div>
-          <button type="submit" class="btn btn-default" id="login-btn">Login</button>
-        </form>
-        <br />
-        <p>Or sign up <a href="/">here</a></p>
-      </div>
-    </div>
+    <p>Welcome to our page!</p>
+    <div></div>
+    <button type="submit" class="btn btn-default" id='login' onclick="login()">Log In</button>
+    <button type="submit" class="btn btn-default" id='logout'>Log Out</button>
   </div>
-  <!-- <input id="login-username" value="" />
-    <input id="login-password" type="password" value="" />
-    <input
-      type="button"
-      class="login-redirect-usernamepassword"
-      value="redirect usernamepassword"
-    />
-    <input
-      type="button"
-      class="login-redirect-authorize"
-      value="redirect authorize" -->
-  <!-- /> -->
+
+  <script type="text/javascript">
+    let auth0 = null;
+    const fetchAuthConfig = () => fetch("/auth_config.json");
+
+    const configureClient = async () => {
+      const response = await fetchAuthConfig();
+      const config = await response.json();
+
+      auth0 = await createAuth0Client({
+        domain: config.domain,
+        client_id: config.clientId
+      });
+    };
+
+    // window.onload = async () => {
+    //   await configureClient();
+    // }
+    // ..
+
+window.onload = async () => {
+
+// .. code ommited for brevity
+
+// updateUI();
+
+const isAuthenticated = await auth0.isAuthenticated();
+
+if (isAuthenticated) {
+  console.log('User is authenticated');
+  return;
+}
+
+// NEW - check for the code and state parameters
+const query = window.location.search;
+if (query.includes("code=") && query.includes("state=")) {
+
+  // Process the login state
+  await auth0.handleRedirectCallback();
   
-  <div id="err"></div>
-  <div id="result"></div>
-  <script>
+  // updateUI();
+
+  // Use replaceState to redirect the user away and remove the querystring parameters
+  window.history.replaceState({}, document.title, "/");
+}
+};
+
+// ..
+
+    const login =  async() => {
+      console.log('login');
+      await auth0.loginWithRedirect({
+        redirect_uri: 'http://localhost:8080/myapp'
+      });
+    };
+
+  </script>
+
+</body>
+
+</html>
+<!-- 
     var webAuth = new auth0.WebAuth({
       domain: 'dev-9tabcska.auth0.com',
       redirectUri: 'http://localhost:8080/myapp',
@@ -88,61 +115,4 @@
 
     $(document).ready(function () {
       $(document.body).append($('<div id="loaded"></div>'));
-    });
-  </script>
-
-</body>
-
-</html>
-
-<!-- <script type="text/javascript">
-      var webAuth = new auth0.WebAuth({
-        domain: 'dev-9tabcska.auth0.com',
-        redirectUri: 'http://localhost:8080/myapp',
-        clientID: 'voOkhCijKjDAHv2i75KJZwCwTLHst2W5',
-        leeway: 30
-      });
-   
-      $('.login-redirect-usernamepassword').click(function(e) {
-        e.preventDefault();
-        console.log('foo');
-
-        webAuth.redirect.loginWithCredentials(
-          {
-            connection: 'Username-Password-Authentication',
-            username: $('#login-username').val(),
-            password: $('#login-password').val(),
-            scope:    'openid%20profile%20email%20read:appointments&',
-            responseType: 'code'
-          },
-          function(err) {
-            $('#err').html(JSON.stringify(err));
-          }
-        );
-      });
-
-      $('.login-redirect-authorize').click(function(e) {
-        e.preventDefault();
-
-        webAuth.authorize({
-          scope:    'openid%20profile%20email%20read:appointments&',
-          responseType: 'code'
-        });
-      });
-
-      webAuth.parseHash(function(err, result) {
-        if (err) {
-          $('#err').html(JSON.stringify(err));
-          $(document.body).append($('<div id="parsed"></div>'));
-        }
-
-        if (result) {
-          $('#result').html(JSON.stringify(result));
-          $(document.body).append($('<div id="parsed"></div>'));
-        }
-      });
-
-      $(document).ready(function() {
-        $(document.body).append($('<div id="loaded"></div>'));
-      }); 
-    </script>-->
+    }); -->
